@@ -13,10 +13,20 @@ st.title("🏎️ F1 Statistics Dashboard 🏁")
 
 year = st.number_input("Select Year 📆", min_value=2018, max_value=2024, value=2021)
 
+# Caching
+fastf1.Cache.enable_cache('cache')
+
+# Use Streamlit cache for repeated function calls
+@st.cache_data
+def load_race_data(year, gp, session_type):
+    session = fastf1.get_session(year, gp, session_type)
+    session.load()
+    return session
+
 # Dropdown
 tracks = [
     'Albert Park 🇦🇺', 'Bahrain 🇧🇭', 'Imola 🇮🇹', 'Miami 🇺🇸', 'Catalunya 🇪🇸', 'Monaco 🇲🇨', 'Baku 🇦🇿', 'Montreal 🇨🇦',
-    'Red Bull Ring 🇦🇹', 'Silverstone 🇬🇧', 'Hungaroring 🇭🇺', 'Spa 🇮🇹', 'Zandvoort 🇳🇱', 'Monza 🇮🇹',
+    'Red Bull Ring 🇦🇹', 'Silverstone 🇬🇧', 'Hungaroring 🇭🇺', 'Spa 🇧🇪', 'Zandvoort 🇳🇱', 'Monza 🇮🇹',
     'Singapore 🇸🇬', 'Suzuka 🇯🇵', 'Austin 🇺🇸', 'Mexico City 🇲🇽', 'Interlagos 🇧🇷', 'Las Vegas 🇺🇸', 'Yas Marina 🇦🇪'
 ]
 track = st.selectbox("Select Circuit 🚥", options=tracks, index=tracks.index("Monza 🇮🇹"))
